@@ -12,21 +12,27 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+
+
+# Take environment variables from .env file
+environ.Env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-$zn=1sc!q#7cg87pzpqsp59fef4v7%v7%22n%s%u9t^x&nriq_"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG", bool, True)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", list)
 
 # Application definition
 
@@ -37,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "core",
+    "mocker",
 ]
 
 MIDDLEWARE = [
@@ -54,7 +62,9 @@ ROOT_URLCONF = "mockserver.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -116,8 +126,86 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Media files
+
+MEDIA_ROOT = env("MEDIA_ROOT")
+
+MEDIA_URL = "/media/"
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Auth
+
+AUTH_USER_MODEL = "core.User"
+
+LOGIN_URL = "login"
+
+LOGIN_REDIRECT_URL = "/"
+
+LOGOUT_REDIRECT_URL = "login"
+
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS", list)
+
+SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT", bool)
+
+# Email
+
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+
+EMAIL_HOST = env("EMAIL_HOST")
+
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+
+EMAIL_PORT = 465
+
+EMAIL_USE_TLS = False
+
+EMAIL_USE_SSL = True
+
+# Logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "WARNING",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "when": "W6",
+            "interval": 4,
+            "backupCount": 4,
+            "encoding": "utf8",
+            "filename": BASE_DIR / "logs/debug.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "format": "{levelname} {asctime} {message}",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "propagate": False,
+            "format": "{levelname} {asctime} {message}",
+        },
+    },
+}
+
+# Site settings
+COMPANY_NAME = env("COMPANY_NAME")

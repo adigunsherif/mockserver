@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <div class="row">
+
+    <div class="col-12">
+      <h4>Server name : {{object.label}}</h4>
+      <h5 class="mb-3">Path : {{object.base_path}} </h5>
+      <div class="text-end"><a href="{% url 'server-update' object.pk %}">edit</a></div>
+
+      <hr class="my-3">
+      <h5>Resources  <a style="text-decoration: none;" href="{% url 'endpoint-create' object.id %}">+</a> </h5>
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Fullpath</th>
+            <th>Status Code</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for endpoint in object.endpoints.all %}
+          <tr>
+            <th> {{forloop.counter}} </th>
+            <td>
+              {{base_url }}mocker/{{endpoint.full_path}}
+            </td>
+            <th> {{endpoint.status_code}} </th>
+            <td>
+              <a href="{% url 'endpoint-update' endpoint.pk %}">edit</a>
+            </td>
+            {% empty %}
+            You do not have any resources for now. Click the plus sign to add new resource.
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+
+
+    </div>
+  </div>
+{% endblock content %}
