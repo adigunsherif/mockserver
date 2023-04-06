@@ -67,7 +67,11 @@ class EndpointUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 class MockerEndpointView(View):
     def get_response(self):
-        data = get_object_or_404(Endpoint, full_path=self.kwargs["fullpath"])
+        data = get_object_or_404(
+            Endpoint,
+            server_id=self.kwargs["server_id"],
+            full_path=self.kwargs["fullpath"],
+        )
         if data.response_type == ResponseType.TEXT:
             return HttpResponse(data.response_body, content_type="text/plain")
         return JsonResponse(json.loads(data.response_body), safe=False)

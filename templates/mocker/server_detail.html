@@ -25,7 +25,7 @@
           <tr>
             <th> {{forloop.counter}} </th>
             <td>
-              {{base_url }}mocker/{{endpoint.full_path}}
+              {{base_url }}server{{endpoint.server_id}}/{{endpoint.full_path}}
             </td>
             <th> {{endpoint.status_code}} </th>
             <td>
