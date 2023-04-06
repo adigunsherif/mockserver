@@ -17,6 +17,5 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region ${{ secrets.AWS_REGION }}
-          git remote add codecommit ssh://git-codecommit.${{ secrets.AWS_REGION }}.amazonaws.com/v1/repos/MyRepo
+          git remote add codecommit${{ secrets.AWS_REPO}}
           git push codecommit master
-
