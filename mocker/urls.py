@@ -20,7 +20,7 @@ urlpatterns = [
         name="endpoint-update",
     ),
     re_path(
-        r"^server(?P<server_id>\d+)/(?P<fullpath>[\w\/-]+)$",
+        r"^server(?P<server_id>\d+)/(?P<fullpath>[\w\/-@]+)$",
         views.MockerEndpointView.as_view(),
     ),
 ]
