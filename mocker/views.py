@@ -71,6 +71,7 @@ class MockerEndpointView(View):
             Endpoint,
             server_id=self.kwargs["server_id"],
             full_path=self.kwargs["fullpath"],
+            is_active=True,
         )
         if data.response_type == ResponseType.TEXT:
             return HttpResponse(data.response_body, content_type="text/plain")

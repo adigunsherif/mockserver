@@ -14,4 +14,10 @@ class ServerForm(ResponsiveModelForm):
 class EndpointForm(ResponsiveModelForm):
     class Meta:
         model = Endpoint
-        fields = ("endpoint_path", "status_code", "response_type", "response_body")
+        fields = (
+            "endpoint_path",
+            "status_code",
+            "response_type",
+            "response_body",
+            "is_active",
+        )
