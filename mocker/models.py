@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 
@@ -39,9 +40,15 @@ class Endpoint(TimestampedModel):
     response_type = models.CharField(
         max_length=100, choices=ResponseType.choices, default=ResponseType.JSON
     )
-    response_body = models.TextField()
+    response_body = models.TextField(blank=True)
     full_path = models.TextField()
     is_active = models.BooleanField(default=True)
+
+    def clean(self):
+        if self.response_type == ResponseType.JSON and not self.response_body:
+            raise ValidationError(
+                {"response_body": "Response body is required if response type is json."}
+            )
 
     def get_absolute_url(self):
         return reverse("server-detail", kwargs={"pk": self.server.pk})

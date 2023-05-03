@@ -74,8 +74,12 @@ class MockerEndpointView(View):
             is_active=True,
         )
         if data.response_type == ResponseType.TEXT:
-            return HttpResponse(data.response_body, content_type="text/plain")
-        return JsonResponse(json.loads(data.response_body), safe=False)
+            return HttpResponse(
+                data.response_body, content_type="text/plain", status=data.status_code
+            )
+        return JsonResponse(
+            json.loads(data.response_body), safe=False, status=data.status_code
+        )
 
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
