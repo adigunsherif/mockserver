@@ -2,9 +2,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 
-from core.models import TimestampedModel
-from mocker.enums import ResponseType
-from mocker.status_codes import StatusCodes
+from apps.core.models import TimestampedModel
+from apps.mocker.enums import ResponseType
+from apps.mocker.status_codes import StatusCodes
 
 
 class Server(TimestampedModel):

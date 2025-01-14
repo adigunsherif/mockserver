@@ -9,10 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, View
 from django.views.generic.edit import CreateView, UpdateView
 
-from mocker.enums import ResponseType
-from mocker.forms import EndpointForm, ServerForm
+from apps.mocker.enums import ResponseType
+from apps.mocker.forms import EndpointForm, ServerForm
 
-from .models import Endpoint, Server
+from apps.mocker.models import Endpoint, Server
 
 
 class ServerDetailView(LoginRequiredMixin, DetailView):

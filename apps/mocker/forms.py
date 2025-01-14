@@ -1,6 +1,6 @@
 from django import forms
 
-from core.forms import ResponsiveModelForm
+from apps.core.forms import ResponsiveModelForm
 
 from .models import Endpoint, Server
 
