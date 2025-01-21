@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
@@ -56,3 +57,9 @@ class Endpoint(TimestampedModel):
     def save(self, *args, **kwargs):
         self.full_path = f"{self.server.base_path}/{self.endpoint_path}"
         super().save(*args, **kwargs)
+
+    @property
+    def fullurl(self):
+        return "{}/server{}/{}".format(
+            settings.BASE_URL, self.server_id, self.full_path
+        )

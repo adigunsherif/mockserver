@@ -210,6 +210,7 @@ LOGGING = {
         },
     },
 }
-
 # Site settings
 COMPANY_NAME = env("COMPANY_NAME")
+
+BASE_URL = env("BASE_URL")

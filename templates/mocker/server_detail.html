@@ -10,7 +10,7 @@
       <div class="text-end"><a href="{% url 'server-update' object.pk %}">edit</a></div>
 
       <hr class="my-3">
-      <h5>Resources  <a style="text-decoration: none;" href="{% url 'endpoint-create' object.id %}">+</a> </h5>
+      <h5>Resources  <small><a style="text-decoration: none;" href="{% url 'endpoint-create' object.id %}">[+Add new]</a></small> </h5>
       <table class="table">
         <thead>
           <tr>
@@ -25,7 +25,7 @@
           <tr>
             <th> {{forloop.counter}} </th>
             <td>
-              {{base_url }}server{{endpoint.server_id}}/{{endpoint.full_path}}
+              {{endpoint.fullurl}}
             </td>
             <th> {{endpoint.status_code}} </th>
             <td>
