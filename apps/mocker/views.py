@@ -11,7 +11,6 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from apps.mocker.enums import ResponseType
 from apps.mocker.forms import EndpointForm, ServerForm
-
 from apps.mocker.models import Endpoint, Server
 
 
