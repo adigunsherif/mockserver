@@ -58,8 +58,8 @@ class EndpointForm(ResponsiveModelForm):
             "endpoint_path",
             "status_code",
             "response_type",
-            "response_body",
             "python_code",
+            "response_body",
             "is_active",
         )
         widgets = {"response_body": AceEditorWidget()}

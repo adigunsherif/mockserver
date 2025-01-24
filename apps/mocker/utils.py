@@ -17,8 +17,7 @@ def execute_python_code(python_code: str, response_body: str) -> str:
         transformed_response = execution_env.get("transformed_response")
 
         if transformed_response is None:
-            raise ValueError("Python code did not set 'transformed_response'")
-
+            return response_body
         return transformed_response
     except Exception as e:
         pass
