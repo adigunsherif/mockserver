@@ -38,6 +38,9 @@ class Endpoint(TimestampedModel):
     status_code = models.IntegerField(
         choices=StatusCodes.choices, default=StatusCodes.HTTP_200_OK
     )
+    python_code = models.TextField(
+        blank=True, help_text="Python code to be executed for this endpoint"
+    )
     response_type = models.CharField(
         max_length=100, choices=ResponseType.choices, default=ResponseType.JSON
     )

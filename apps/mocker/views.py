@@ -12,6 +12,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from apps.mocker.enums import ResponseType
 from apps.mocker.forms import EndpointForm, ServerForm
 from apps.mocker.models import Endpoint, Server
+from apps.mocker.utils import execute_python_code
 
 
 class ServerDetailView(LoginRequiredMixin, DetailView):
@@ -72,13 +73,24 @@ class MockerEndpointView(View):
             full_path=self.kwargs["fullpath"],
             is_active=True,
         )
+
+        response_body = self.get_transformed_response_body(data)
         if data.response_type == ResponseType.TEXT:
             return HttpResponse(
-                data.response_body, content_type="text/plain", status=data.status_code
+                response_body, content_type="text/plain", status=data.status_code
             )
         return JsonResponse(
-            json.loads(data.response_body), safe=False, status=data.status_code
+            json.loads(response_body), safe=False, status=data.status_code
         )
+
+    def get_transformed_response_body(self, data):
+        response_body = data.response_body
+        if data.python_code:
+            try:
+                response_body = execute_python_code(data.python_code, response_body)
+            except RuntimeError as e:
+                pass
+        return response_body
 
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):

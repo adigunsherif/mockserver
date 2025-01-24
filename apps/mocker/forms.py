@@ -1,4 +1,5 @@
 import json
+
 from django import forms
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
@@ -22,7 +23,9 @@ class AceEditorWidget(forms.Textarea):
 
         editor_id = attrs.get("id", f"id_{name}")
         ace_div_id = f"ace_{editor_id}"
-        ace_div = f'<div id="{ace_div_id}" style="height: 300px; width: 100%;">{value}</div>'
+        ace_div = (
+            f'<div id="{ace_div_id}" style="height: 300px; width: 100%;">{value}</div>'
+        )
         script = f"""
         <script>
             document.addEventListener("DOMContentLoaded", function() {{
@@ -56,6 +59,7 @@ class EndpointForm(ResponsiveModelForm):
             "status_code",
             "response_type",
             "response_body",
+            "python_code",
             "is_active",
         )
         widgets = {"response_body": AceEditorWidget()}
