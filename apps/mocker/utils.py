@@ -18,6 +18,7 @@ def execute_python_code(python_code: str, response_body: str) -> str:
 
         if transformed_response is None:
             return response_body
+
         return transformed_response
     except Exception as e:
-        pass
+        raise RuntimeError(f"Error executing Python code: {e}")
