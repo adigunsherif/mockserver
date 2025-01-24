@@ -38,6 +38,10 @@ class Endpoint(TimestampedModel):
     status_code = models.IntegerField(
         choices=StatusCodes.choices, default=StatusCodes.HTTP_200_OK
     )
+    run_python_code = models.BooleanField(
+        default=False,
+        help_text="When checked, define a function 'evaluate' in the response body that returns data.",
+    )
     response_type = models.CharField(
         max_length=100, choices=ResponseType.choices, default=ResponseType.JSON
     )
