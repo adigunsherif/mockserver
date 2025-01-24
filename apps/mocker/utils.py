@@ -1,24 +1,22 @@
 import json
 
 
-def execute_python_code(python_code: str, response_body: str) -> str:
+def execute_python_code(python_code) -> str:
     """
-    Executes the given Python code on the response_body.
+    Executes the given Python code and returns the result.
+    the python code should define the 'evaluate' function.
     """
-
-    execution_env = {
-        "response_body": response_body,
-        "json": json,
-        "transformed_response": None,
-    }
-
     try:
-        exec(python_code, {}, execution_env)
-        transformed_response = execution_env.get("transformed_response")
+        context = {}
+        exec(python_code, {}, context)
+        evaluate = context.get("evaluate")
 
-        if transformed_response is None:
-            return response_body
+        if not evaluate:
+            raise ValueError(
+                "The 'evaluate' function is not defined in the Python code."
+            )
 
-        return transformed_response
+        result = context["evaluate"]()
+        return json.dumps(result)
     except Exception as e:
         raise RuntimeError(f"Error executing Python code: {e}")

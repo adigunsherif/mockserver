@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.forms import ValidationError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
@@ -74,23 +75,21 @@ class MockerEndpointView(View):
             is_active=True,
         )
 
-        response_body = self.get_transformed_response_body(data)
+        response_body = data.response_body
+        if data.run_python_code:
+            try:
+                response_body = execute_python_code(data.response_body)
+            except RuntimeError as e:
+                return JsonResponse({"error": str(e)}, status=400)
+
         if data.response_type == ResponseType.TEXT:
             return HttpResponse(
                 response_body, content_type="text/plain", status=data.status_code
             )
+
         return JsonResponse(
             json.loads(response_body), safe=False, status=data.status_code
         )
-
-    def get_transformed_response_body(self, data):
-        response_body = data.response_body
-        if data.python_code:
-            try:
-                response_body = execute_python_code(data.python_code, response_body)
-            except RuntimeError as e:
-                pass
-        return response_body
 
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):

@@ -58,7 +58,7 @@ class EndpointForm(ResponsiveModelForm):
             "endpoint_path",
             "status_code",
             "response_type",
-            "python_code",
+            "run_python_code",
             "response_body",
             "is_active",
         )
