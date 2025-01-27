@@ -77,8 +77,10 @@ class MockerEndpointView(View):
 
         response_body = data.response_body
         if data.run_python_code:
+            query_params = self.request.GET.dict()
+
             try:
-                response_body = execute_python_code(data.response_body)
+                response_body = execute_python_code(data.response_body, query_params)
             except RuntimeError as e:
                 return JsonResponse({"error": str(e)}, status=400)
 
